@@ -14,7 +14,8 @@ def receiver():
     data= request.json
     ultimo_dado = data
     print(f"Dados recebidos: {data}")
-    return{"Status": "ok"}, 200
+    socketio.emit('novo_dado', data)
+    return {"Status": "ok"}, 200
 
 @app.route('/dashboard/botoes')
 def dashboard_botoes():
@@ -181,5 +182,5 @@ def dashboard_joystick():
 
 if __name__ == '__main__':
     port = int(os.environ.get("PORT", 10000))
-    app.run(host= '0.0.0.0', port=port)
+    socketio.run(app, host= '0.0.0.0', port=port)
 
