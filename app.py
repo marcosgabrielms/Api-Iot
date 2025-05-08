@@ -1,7 +1,9 @@
 from flask import Flask, request, render_template_string
+from flask_socketio import SockeIO, emit
 import os
 
 app = Flask(__name__)
+socketio = SocketIO(app, cors_allowed_origins="*")
 
 ultimo_dado = {}
 
@@ -13,6 +15,109 @@ def receiver():
     ultimo_dado = data
     print(f"Dados recebidos: {data}")
     return{"Status": "ok"}, 200
+
+@app.route('/dashboard/botoes')
+def dashboard_botoes():
+    global ultimo_dado
+    html = """
+    <!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Status dos Botões</title>
+    <script src="https://cdn.socket.io/4.4.1/socket.io.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #f0f4f8, #d9e2ec);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+            transition: transform 0.3s ease;
+        }
+
+        .container:hover {
+            transform: translateY(-5px);
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 24px;
+            font-size: 28px;
+        }
+
+        p {
+            font-size: 18px;
+            color: #555;
+        }
+
+        .status {
+            font-weight: bold;
+            color: #007BFF;
+            transition: color 0.3s ease;
+        }
+
+        .pressed {
+            color: #28a745;
+        }
+
+        .released {
+            color: #dc3545;
+        }
+
+        .unknown {
+            color: #6c757d;
+        }
+    </style>
+    <script>
+        const socket = io();
+
+        socket.on("novo_dado", function(dado) {
+            const botaoA = document.getElementById("status_botao_a");
+            const botaoB = document.getElementById("status_botao_b");
+
+            updateStatus(botaoA, dado.botao_a);
+            updateStatus(botaoB, dado.botao_b);
+        });
+
+        function updateStatus(element, status) {
+            element.className = "status";
+            if (status === 1) {
+                element.innerText = "Pressionado!";
+                element.classList.add("pressed");
+            } else if (status === 0) {
+                element.innerText = "Solto";
+                element.classList.add("released");
+            } else {
+                element.innerText = "N/A";
+                element.classList.add("unknown");
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Status dos Botões</h1>
+        <p><strong>Botão A:</strong> <span id="status_botao_a" class="status">--</span></p>
+        <p><strong>Botão B:</strong> <span id="status_botao_b" class="status">--</span></p>
+    </div>
+</body>
+</html>
+"""
+    return render_template_string(html)
 
 @app.route('/dashboard/joystick')
 
