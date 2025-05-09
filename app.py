@@ -1,5 +1,5 @@
 from flask import Flask, request, render_template_string
-from flask_socketio import SockeIO, emit
+from flask_socketio import SocketIO, emit
 import os
 
 app = Flask(__name__)
