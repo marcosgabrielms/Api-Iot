@@ -1,3 +1,6 @@
-flask
-flask-socketio
-eventlet
+# 'requirements.txt' lista as bibliotecas necessárias para rodar o aplicativo. Essas dependências podem ser instaladas com o comando:
+# pip install -r requirements.txt
+
+flask  # Flask é utilizado para criar o servidor web
+flask-socketio  # Flask-SocketIO é usado para integrar o Flask com o SocketIO
+eventlet  # Eventlet é necessário para o suporte ao SocketIO com Flask
