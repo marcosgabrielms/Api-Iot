@@ -9,7 +9,7 @@ ultimo_dado = {}
 
 @app.route('/dados', methods = ['POST'])
 
-def receiver():
+def receber_dados():
     global ultimo_dado
     data= request.json
     ultimo_dado = data
@@ -22,13 +22,13 @@ def dashboard_botoes():
     global ultimo_dado
     html = """
     <!DOCTYPE html>
-<html lang="pt-BR">
-<head>
+    <html lang="pt-BR">
+    <head>
     <meta charset="UTF-8">
-    <title>Status dos Botões</title>
-    <script src="https://cdn.socket.io/4.4.1/socket.io.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-    <style>
+        <title>Status dos Botões</title>
+        <script src="https://cdn.socket.io/4.4.1/socket.io.min.js"></script>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+        <style>
         body {
             font-family: 'Roboto', sans-serif;
             background: linear-gradient(135deg, #f0f4f8, #d9e2ec);
@@ -118,7 +118,7 @@ def dashboard_botoes():
 </body>
 </html>
 """
-    return render_template_string(html)
+return render_template_string(html)
 
 @app.route('/dashboard/joystick')
 
