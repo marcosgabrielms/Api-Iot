@@ -118,7 +118,7 @@ def dashboard_botoes():
 </body>
 </html>
 """
-return render_template_string(html)
+    return render_template_string(html)
 
 @app.route('/dashboard/joystick')
 
